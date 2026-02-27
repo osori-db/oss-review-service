@@ -30,7 +30,6 @@ export default function VersionList({ ossMasterId }: VersionListProps) {
     setReviewFilter,
     toggleSelection,
     toggleSelectAll,
-    selectUnreviewed,
     saveOssMaster,
     saveVersion,
     bulkUpdateReview,
@@ -40,7 +39,6 @@ export default function VersionList({ ossMasterId }: VersionListProps) {
   const [reviewTarget, setReviewTarget] = useState<OssVersion | null>(null)
 
   const allSelected = versions.length > 0 && versions.every((v) => selectedIds.has(v.oss_version_id))
-  const hasUnreviewed = versions.some((v) => v.reviewed === 'N')
 
   return (
     <div className="space-y-6">
@@ -144,18 +142,6 @@ export default function VersionList({ ossMasterId }: VersionListProps) {
                 </tbody>
               </table>
             </div>
-            {hasUnreviewed && (
-              <div className="flex items-center gap-2 mt-2">
-                <button
-                  type="button"
-                  onClick={selectUnreviewed}
-                  className="text-xs text-amber-600 hover:text-amber-800 font-medium"
-                >
-                  리뷰 안됨만 선택
-                </button>
-              </div>
-            )}
-
             <Pagination
               currentPage={currentPage}
               totalCount={totalCount}

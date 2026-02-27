@@ -22,7 +22,6 @@ interface UseOssVersionsReturn extends UseOssVersionsState {
   readonly setCurrentPage: (page: number) => void
   readonly toggleSelection: (id: number) => void
   readonly toggleSelectAll: () => void
-  readonly selectUnreviewed: () => void
   readonly setReviewFilter: (filter: OssReviewStatus | '') => void
   readonly updateReviewStatus: (id: number, reviewed: OssReviewStatus) => Promise<void>
   readonly updateOssMasterReview: (reviewed: OssReviewStatus) => Promise<void>
@@ -134,17 +133,6 @@ export function useOssVersions(ossMasterId: number): UseOssVersionsReturn {
         selectedIds: new Set(prev.versions.map((v) => v.oss_version_id)),
       }
     })
-  }, [])
-
-  const selectUnreviewed = useCallback(() => {
-    setState((prev) => ({
-      ...prev,
-      selectedIds: new Set(
-        prev.versions
-          .filter((v) => v.reviewed === 'N')
-          .map((v) => v.oss_version_id)
-      ),
-    }))
   }, [])
 
   const updateOssMasterReview = useCallback(
@@ -314,7 +302,6 @@ export function useOssVersions(ossMasterId: number): UseOssVersionsReturn {
     setReviewFilter,
     toggleSelection,
     toggleSelectAll,
-    selectUnreviewed,
     updateReviewStatus,
     updateOssMasterReview,
     saveOssMaster,
