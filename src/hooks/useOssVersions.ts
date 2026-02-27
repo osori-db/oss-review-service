@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { useAuth } from './useAuth'
-import { fetchOssDetail, fetchOssVersions, updateOssVersion, bulkReviewVersions } from '@/lib/api-client'
+import { fetchOssDetail, fetchOssVersions, updateOssVersion, updateOssMaster, bulkReviewVersions } from '@/lib/api-client'
 import type { OssMaster, OssVersion, OssReviewStatus } from '@/lib/types'
 
 interface UseOssVersionsState {
@@ -25,6 +25,7 @@ interface UseOssVersionsReturn extends UseOssVersionsState {
   readonly selectUnreviewed: () => void
   readonly setReviewFilter: (filter: OssReviewStatus | '') => void
   readonly updateReviewStatus: (id: number, reviewed: OssReviewStatus) => Promise<void>
+  readonly updateOssMasterReview: (reviewed: OssReviewStatus) => Promise<void>
   readonly bulkUpdateReview: (reviewed: OssReviewStatus) => Promise<void>
   readonly refresh: () => void
 }
@@ -144,6 +145,36 @@ export function useOssVersions(ossMasterId: number): UseOssVersionsReturn {
     }))
   }, [])
 
+  const updateOssMasterReview = useCallback(
+    async (reviewed: OssReviewStatus) => {
+      if (!token || !state.ossMaster) return
+
+      setState((prev) => ({ ...prev, updating: true }))
+
+      try {
+        const result = await updateOssMaster(token, ossMasterId, {
+          ...state.ossMaster,
+          reviewed,
+        })
+
+        if (!result.success) {
+          setState((prev) => ({ ...prev, updating: false, error: result.error ?? 'OSS 리뷰 업데이트 실패' }))
+          return
+        }
+
+        setState((prev) => ({
+          ...prev,
+          updating: false,
+          ossMaster: prev.ossMaster ? { ...prev.ossMaster, reviewed } : null,
+        }))
+      } catch (error) {
+        const message = error instanceof Error ? error.message : '알 수 없는 오류'
+        setState((prev) => ({ ...prev, updating: false, error: message }))
+      }
+    },
+    [token, ossMasterId, state.ossMaster]
+  )
+
   const updateReviewStatus = useCallback(
     async (id: number, reviewed: OssReviewStatus) => {
       if (!token) return
@@ -221,6 +252,7 @@ export function useOssVersions(ossMasterId: number): UseOssVersionsReturn {
     toggleSelectAll,
     selectUnreviewed,
     updateReviewStatus,
+    updateOssMasterReview,
     bulkUpdateReview,
     refresh: load,
   }

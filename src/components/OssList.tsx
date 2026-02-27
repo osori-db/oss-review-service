@@ -68,7 +68,7 @@ export default function OssList() {
         >
           <option value="">전체</option>
           <option value="Y">리뷰 완료</option>
-          <option value="N">미리뷰</option>
+          <option value="N">리뷰 안됨</option>
         </select>
       </div>
 

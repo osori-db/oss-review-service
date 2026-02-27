@@ -2,7 +2,7 @@ export type OssReviewStatus = 'Y' | 'N'
 
 export const REVIEW_STATUS_LABELS: Record<OssReviewStatus, string> = {
   Y: '리뷰 완료',
-  N: '미리뷰',
+  N: '리뷰 안됨',
 }
 
 export interface OssVersionCounts {

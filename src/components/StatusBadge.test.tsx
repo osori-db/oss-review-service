@@ -8,8 +8,8 @@ describe('StatusBadge', () => {
     expect(screen.getByText('리뷰 완료')).toBeInTheDocument()
   })
 
-  it('미리뷰 상태를 올바르게 표시한다', () => {
+  it('리뷰 안됨 상태를 올바르게 표시한다', () => {
     render(<StatusBadge status="N" />)
-    expect(screen.getByText('미리뷰')).toBeInTheDocument()
+    expect(screen.getByText('리뷰 안됨')).toBeInTheDocument()
   })
 })

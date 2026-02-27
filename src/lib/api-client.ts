@@ -81,6 +81,17 @@ export async function updateOssVersion(
   })
 }
 
+export async function updateOssMaster(
+  token: string,
+  id: number,
+  data: Partial<OssMaster>
+): Promise<ApiResponse<OssMaster>> {
+  return apiFetch<OssMaster>(`/api/oss/${id}`, token, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  })
+}
+
 export function parseUserInfoFromToken(token: string): UserInfo | null {
   try {
     const parts = token.split('.')

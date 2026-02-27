@@ -30,6 +30,7 @@ export default function VersionList({ ossMasterId }: VersionListProps) {
     toggleSelectAll,
     selectUnreviewed,
     updateReviewStatus,
+    updateOssMasterReview,
     bulkUpdateReview,
     refresh,
   } = useOssVersions(ossMasterId)
@@ -39,7 +40,13 @@ export default function VersionList({ ossMasterId }: VersionListProps) {
 
   return (
     <div className="space-y-6">
-      {ossMaster && <OssDetail oss={ossMaster} />}
+      {ossMaster && (
+        <OssDetail
+          oss={ossMaster}
+          onUpdateReview={updateOssMasterReview}
+          updating={updating}
+        />
+      )}
 
       {error && <ErrorMessage message={error} onRetry={refresh} />}
 
@@ -61,7 +68,7 @@ export default function VersionList({ ossMasterId }: VersionListProps) {
             >
               <option value="">전체</option>
               <option value="Y">리뷰 완료</option>
-              <option value="N">미리뷰</option>
+              <option value="N">리뷰 안됨</option>
             </select>
           </div>
 
@@ -94,7 +101,7 @@ export default function VersionList({ ossMasterId }: VersionListProps) {
           <LoadingSkeleton rows={6} />
         ) : versions.length === 0 ? (
           <div className="text-center py-8 text-gray-500">
-            {reviewFilter === 'N' ? '미리뷰 버전이 없습니다.' : '버전이 없습니다.'}
+            {reviewFilter === 'N' ? '리뷰 안됨 버전이 없습니다.' : '버전이 없습니다.'}
           </div>
         ) : (
           <>
@@ -141,7 +148,7 @@ export default function VersionList({ ossMasterId }: VersionListProps) {
                   onClick={selectUnreviewed}
                   className="text-xs text-amber-600 hover:text-amber-800 font-medium"
                 >
-                  미리뷰만 선택
+                  리뷰 안됨만 선택
                 </button>
               </div>
             )}

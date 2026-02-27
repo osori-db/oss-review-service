@@ -1,11 +1,16 @@
 import StatusBadge from './StatusBadge'
-import type { OssMaster } from '@/lib/types'
+import type { OssMaster, OssReviewStatus } from '@/lib/types'
 
 interface OssDetailProps {
   readonly oss: OssMaster
+  readonly onUpdateReview?: (reviewed: OssReviewStatus) => void
+  readonly updating?: boolean
 }
 
-export default function OssDetail({ oss }: OssDetailProps) {
+export default function OssDetail({ oss, onUpdateReview, updating }: OssDetailProps) {
+  const nextStatus: OssReviewStatus = oss.reviewed === 'Y' ? 'N' : 'Y'
+  const buttonLabel = oss.reviewed === 'Y' ? '리뷰 취소' : '리뷰 완료'
+
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-6">
       <div className="flex items-start justify-between gap-4">
@@ -15,7 +20,23 @@ export default function OssDetail({ oss }: OssDetailProps) {
             <p className="text-sm text-gray-500 mt-1">{oss.oss_nickname}</p>
           )}
         </div>
-        <StatusBadge status={oss.reviewed} />
+        <div className="flex items-center gap-2">
+          <StatusBadge status={oss.reviewed} />
+          {onUpdateReview && (
+            <button
+              type="button"
+              onClick={() => onUpdateReview(nextStatus)}
+              disabled={updating}
+              className={`text-xs font-medium px-3 py-1.5 rounded-md border transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
+                oss.reviewed === 'Y'
+                  ? 'border-gray-300 text-gray-700 hover:bg-gray-50'
+                  : 'border-green-300 text-green-700 bg-green-50 hover:bg-green-100'
+              }`}
+            >
+              {buttonLabel}
+            </button>
+          )}
+        </div>
       </div>
 
       <dl className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-sm">
