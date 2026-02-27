@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { useAuth } from './useAuth'
-import { fetchOssDetail, fetchOssVersions, updateOssVersion, updateOssMaster, bulkReviewVersions } from '@/lib/api-client'
+import { fetchOssDetail, fetchOssVersions, updateOssVersion, updateOssMaster, bulkDeleteVersions } from '@/lib/api-client'
 import type { OssMaster, OssVersion, OssReviewStatus } from '@/lib/types'
 
 interface UseOssVersionsState {
@@ -27,7 +27,7 @@ interface UseOssVersionsReturn extends UseOssVersionsState {
   readonly updateOssMasterReview: (reviewed: OssReviewStatus) => Promise<void>
   readonly saveOssMaster: (data: Partial<OssMaster>) => Promise<void>
   readonly saveVersion: (id: number, data: Partial<OssVersion>) => Promise<void>
-  readonly bulkUpdateReview: (reviewed: OssReviewStatus) => Promise<void>
+  readonly bulkDelete: () => Promise<void>
   readonly refresh: () => void
 }
 
@@ -259,20 +259,17 @@ export function useOssVersions(ossMasterId: number): UseOssVersionsReturn {
     [token, state.versions]
   )
 
-  const bulkUpdateReview = useCallback(
-    async (reviewed: OssReviewStatus) => {
+  const bulkDelete = useCallback(
+    async () => {
       if (!token || state.selectedIds.size === 0) return
 
       setState((prev) => ({ ...prev, updating: true }))
 
       try {
-        const result = await bulkReviewVersions(token, {
-          versionIds: Array.from(state.selectedIds),
-          reviewed,
-        })
+        const result = await bulkDeleteVersions(token, Array.from(state.selectedIds))
 
         if (!result.success) {
-          setState((prev) => ({ ...prev, updating: false, error: result.error ?? '일괄 처리 실패' }))
+          setState((prev) => ({ ...prev, updating: false, error: result.error ?? '일괄 삭제 실패' }))
           return
         }
 
@@ -281,7 +278,7 @@ export function useOssVersions(ossMasterId: number): UseOssVersionsReturn {
           setState((prev) => ({
             ...prev,
             updating: false,
-            error: `${bulkResult.succeeded}건 성공, ${bulkResult.failed}건 실패`,
+            error: `${bulkResult.succeeded}건 삭제 성공, ${bulkResult.failed}건 실패`,
           }))
         } else {
           setState((prev) => ({ ...prev, updating: false }))
@@ -306,7 +303,7 @@ export function useOssVersions(ossMasterId: number): UseOssVersionsReturn {
     updateOssMasterReview,
     saveOssMaster,
     saveVersion,
-    bulkUpdateReview,
+    bulkDelete,
     refresh: load,
   }
 }

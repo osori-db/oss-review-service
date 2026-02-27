@@ -32,7 +32,7 @@ export default function VersionList({ ossMasterId }: VersionListProps) {
     toggleSelectAll,
     saveOssMaster,
     saveVersion,
-    bulkUpdateReview,
+    bulkDelete,
     refresh,
   } = useOssVersions(ossMasterId)
 
@@ -81,19 +81,15 @@ export default function VersionList({ ossMasterId }: VersionListProps) {
               </span>
               <button
                 type="button"
-                onClick={() => bulkUpdateReview('Y')}
+                onClick={() => {
+                  if (window.confirm(`선택한 ${selectedIds.size}건의 버전을 삭제하시겠습니까?`)) {
+                    bulkDelete()
+                  }
+                }}
                 disabled={updating}
-                className="text-xs font-medium px-3 py-1.5 rounded-md bg-olive-500 text-white hover:bg-olive-600 disabled:opacity-40 disabled:cursor-not-allowed"
+                className="text-xs font-medium px-3 py-1.5 rounded-md bg-red-500 text-white hover:bg-red-600 disabled:opacity-40 disabled:cursor-not-allowed"
               >
-                리뷰하기
-              </button>
-              <button
-                type="button"
-                onClick={() => bulkUpdateReview('N')}
-                disabled={updating}
-                className="text-xs font-medium px-3 py-1.5 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                리뷰 취소
+                삭제하기
               </button>
             </div>
           )}

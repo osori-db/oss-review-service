@@ -89,12 +89,11 @@ export interface OssVersionListParams {
   readonly direction?: 'ASC' | 'DESC'
 }
 
-export interface BulkReviewRequest {
+export interface BulkDeleteRequest {
   readonly versionIds: readonly number[]
-  readonly reviewed: OssReviewStatus
 }
 
-export interface BulkReviewResult {
+export interface BulkDeleteResult {
   readonly total: number
   readonly succeeded: number
   readonly failed: number

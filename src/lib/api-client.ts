@@ -1,7 +1,7 @@
 import type {
   ApiResponse,
-  BulkReviewRequest,
-  BulkReviewResult,
+  BulkDeleteRequest,
+  BulkDeleteResult,
   OssListParams,
   OssMaster,
   OssVersion,
@@ -107,11 +107,12 @@ export function parseUserInfoFromToken(token: string): UserInfo | null {
   }
 }
 
-export async function bulkReviewVersions(
+export async function bulkDeleteVersions(
   token: string,
-  request: BulkReviewRequest
-): Promise<ApiResponse<BulkReviewResult>> {
-  return apiFetch<BulkReviewResult>('/api/oss-versions/bulk-review', token, {
+  versionIds: readonly number[]
+): Promise<ApiResponse<BulkDeleteResult>> {
+  const request: BulkDeleteRequest = { versionIds }
+  return apiFetch<BulkDeleteResult>('/api/oss-versions/bulk-delete', token, {
     method: 'POST',
     body: JSON.stringify(request),
   })
