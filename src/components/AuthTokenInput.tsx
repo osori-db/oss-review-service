@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useAuth } from '@/hooks/useAuth'
 
 export default function AuthTokenInput() {
-  const { token, setToken, clearToken, isAuthenticated } = useAuth()
+  const { setToken, isAuthenticated } = useAuth()
   const [inputValue, setInputValue] = useState('')
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -17,27 +17,7 @@ export default function AuthTokenInput() {
   }
 
   if (isAuthenticated) {
-    return (
-      <div className="flex items-center gap-3 bg-green-50 border border-green-200 rounded-lg px-4 py-2">
-        <div className="flex items-center gap-2 text-sm text-green-700">
-          <svg className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path
-              fillRule="evenodd"
-              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-              clipRule="evenodd"
-            />
-          </svg>
-          <span>인증됨 (토큰: ...{token?.slice(-8)})</span>
-        </div>
-        <button
-          type="button"
-          onClick={clearToken}
-          className="ml-auto text-sm text-red-600 hover:text-red-800 font-medium"
-        >
-          로그아웃
-        </button>
-      </div>
-    )
+    return null
   }
 
   return (

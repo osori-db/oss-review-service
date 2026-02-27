@@ -3,7 +3,7 @@
 import { useAuth } from '@/hooks/useAuth'
 
 export default function Header() {
-  const { userInfo, isAuthenticated } = useAuth()
+  const { userInfo, clearToken, isAuthenticated } = useAuth()
 
   return (
     <header className="flex items-center justify-between mb-6">
@@ -14,9 +14,18 @@ export default function Header() {
         </p>
       </div>
       {isAuthenticated && userInfo && (
-        <div className="text-right text-sm">
-          <p className="font-medium text-gray-900">{userInfo.userId}</p>
-          <p className="text-gray-500">{userInfo.companyName}</p>
+        <div className="flex items-center gap-3">
+          <div className="text-right text-sm">
+            <p className="font-medium text-gray-900">{userInfo.userId}</p>
+            <p className="text-gray-500">{userInfo.companyName}</p>
+          </div>
+          <button
+            type="button"
+            onClick={clearToken}
+            className="text-sm text-red-600 hover:text-red-800 font-medium"
+          >
+            로그아웃
+          </button>
         </div>
       )}
     </header>
