@@ -23,12 +23,15 @@ export async function GET(
     )
   }
 
+  const clientPage = Number(searchParams.get('page') ?? '1')
+  const apiPage = clientPage > 0 ? clientPage - 1 : 0
+
   const query = buildQueryString({
     ossMasterId,
     version: searchParams.get('version'),
     reviewed: searchParams.get('reviewed'),
     equalFlag: searchParams.get('equalFlag') ?? 'N',
-    page: searchParams.get('page') ?? '0',
+    page: String(apiPage),
     size: searchParams.get('size') ?? '20',
     sort: searchParams.get('sort') ?? 'version',
     direction: searchParams.get('direction') ?? 'ASC',
@@ -45,8 +48,13 @@ export async function GET(
     }
 
     const messageList = result.messageList as Record<string, unknown>
-    const versions = (messageList.ossVersionList ?? messageList.content ?? []) as OssVersion[]
-    const totalCount = (messageList.totalCount ?? messageList.totalElements ?? 0) as number
+    const rawList = (messageList.list ?? messageList.ossVersionList ?? messageList.content ?? []) as readonly Record<string, unknown>[]
+    const totalCount = (messageList.count ?? messageList.totalCount ?? messageList.totalElements ?? 0) as number
+
+    const versions = rawList.map((item) => ({
+      ...item,
+      reviewed: item.reviewed === 1 || item.reviewed === '1' || item.reviewed === 'Y' ? 'Y' as const : 'N' as const,
+    })) as unknown as readonly OssVersion[]
 
     return NextResponse.json({
       success: true,

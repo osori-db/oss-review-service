@@ -6,6 +6,7 @@ import type {
   OssMaster,
   OssVersion,
   OssVersionListParams,
+  UserInfo,
 } from './types'
 
 async function apiFetch<T>(
@@ -78,6 +79,21 @@ export async function updateOssVersion(
     method: 'PUT',
     body: JSON.stringify(data),
   })
+}
+
+export function parseUserInfoFromToken(token: string): UserInfo | null {
+  try {
+    const parts = token.split('.')
+    if (parts.length !== 3) return null
+    const payload = JSON.parse(atob(parts[1]))
+    return {
+      userId: payload.userId ?? '',
+      companyName: payload.companyName ?? '',
+      key: payload.key ?? '',
+    }
+  } catch {
+    return null
+  }
 }
 
 export async function bulkReviewVersions(

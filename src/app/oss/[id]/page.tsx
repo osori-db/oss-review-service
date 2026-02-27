@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Header from '@/components/Header'
 import AuthTokenInput from '@/components/AuthTokenInput'
 import VersionList from '@/components/VersionList'
 
@@ -12,7 +13,8 @@ export default async function OssDetailPage({ params }: OssDetailPageProps) {
 
   return (
     <main className="max-w-4xl mx-auto px-4 py-8">
-      <div className="mb-6">
+      <Header />
+      <div className="mb-4">
         <Link
           href="/"
           className="text-sm text-blue-600 hover:underline"

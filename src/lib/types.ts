@@ -34,9 +34,9 @@ export interface OssVersion {
   readonly description_ko: string
   readonly attribution: string
   readonly copyright: string
-  readonly declaredLicenseList: readonly number[]
-  readonly detectedLicenseList: readonly number[]
-  readonly restrictionList: readonly number[]
+  readonly declaredLicenseList: readonly string[] | null
+  readonly detectedLicenseList: readonly string[] | null
+  readonly restrictionList: readonly string[] | null
   readonly license_combination: 'AND' | 'OR'
   readonly release_date: string
   readonly reviewed: OssReviewStatus
@@ -89,4 +89,10 @@ export interface BulkReviewResult {
   readonly total: number
   readonly succeeded: number
   readonly failed: number
+}
+
+export interface UserInfo {
+  readonly userId: string
+  readonly companyName: string
+  readonly key: string
 }

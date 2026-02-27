@@ -1,9 +1,12 @@
 'use client'
 
-import { createContext, useState, useEffect, useCallback, type ReactNode } from 'react'
+import { createContext, useState, useEffect, useCallback, useMemo, type ReactNode } from 'react'
+import { parseUserInfoFromToken } from '@/lib/api-client'
+import type { UserInfo } from '@/lib/types'
 
 interface AuthContextValue {
   readonly token: string | null
+  readonly userInfo: UserInfo | null
   readonly setToken: (token: string) => void
   readonly clearToken: () => void
   readonly isAuthenticated: boolean
@@ -25,6 +28,11 @@ export function AuthProvider({ children }: { readonly children: ReactNode }) {
     setInitialized(true)
   }, [])
 
+  const userInfo = useMemo(() => {
+    if (!token) return null
+    return parseUserInfoFromToken(token)
+  }, [token])
+
   const setToken = useCallback((newToken: string) => {
     const trimmed = newToken.trim()
     if (!trimmed) return
@@ -45,6 +53,7 @@ export function AuthProvider({ children }: { readonly children: ReactNode }) {
     <AuthContext.Provider
       value={{
         token,
+        userInfo,
         setToken,
         clearToken,
         isAuthenticated: token !== null,
