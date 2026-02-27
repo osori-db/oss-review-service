@@ -1,6 +1,6 @@
 # OSS Review (osori_review)
 
-OSORI(Open Source Software Review Infrastructure) 외부 API를 활용하여 OSS 버전별 리뷰 상태를 확인하고 관리하는 웹 애플리케이션입니다.
+OSORI OSS 버전별 리뷰 상태를 확인하고 관리하는 웹 애플리케이션입니다.
 
 ## 기술 스택
 
@@ -34,6 +34,18 @@ npm start
 
 개발 서버: http://localhost:3000
 
+### Docker 실행
+
+```bash
+# 이미지 빌드
+docker build -t osori-review .
+
+# 컨테이너 실행
+docker run -p 3000:3000 osori-review
+```
+
+http://localhost:3000 으로 접속합니다.
+
 ### 테스트
 
 ```bash
@@ -42,44 +54,6 @@ npm test
 
 # 테스트 워치 모드
 npm run test:watch
-```
-
-## 프로젝트 구조
-
-```
-src/
-├── app/                    # Next.js App Router 페이지
-│   ├── api/                # API 프록시 라우트 (외부 API 중계)
-│   │   ├── oss/            # OSS 마스터 API
-│   │   └── oss-versions/   # OSS 버전 API (CRUD + 일괄 삭제)
-│   ├── oss/[id]/           # OSS 상세 페이지
-│   ├── layout.tsx          # 루트 레이아웃
-│   └── page.tsx            # 메인 페이지 (OSS 목록)
-├── components/             # React 컴포넌트
-│   ├── AuthTokenInput.tsx  # 토큰 입력 폼
-│   ├── Header.tsx          # 헤더 (사용자 정보 + 로그아웃)
-│   ├── Modal.tsx           # 범용 모달 컴포넌트
-│   ├── OssList.tsx         # OSS 목록 (검색, 필터, 페이지네이션)
-│   ├── OssListItem.tsx     # OSS 목록 행
-│   ├── OssDetail.tsx       # OSS 상세 정보
-│   ├── OssReviewModal.tsx  # OSS 리뷰/수정 모달
-│   ├── VersionList.tsx     # 버전 목록 (선택, 필터, 일괄 삭제)
-│   ├── VersionItem.tsx     # 버전 목록 행
-│   ├── VersionReviewModal.tsx  # 버전 리뷰/수정 모달
-│   ├── StatusBadge.tsx     # 리뷰 상태 배지
-│   ├── Pagination.tsx      # 페이지네이션
-│   ├── LoadingSkeleton.tsx # 로딩 스켈레톤
-│   └── ErrorMessage.tsx    # 에러 메시지
-├── contexts/
-│   └── AuthContext.tsx      # 인증 컨텍스트 (sessionStorage)
-├── hooks/
-│   ├── useAuth.ts          # 인증 훅
-│   ├── useOssList.ts       # OSS 목록 데이터 훅
-│   └── useOssVersions.ts   # OSS 버전 데이터 훅
-└── lib/
-    ├── api-client.ts       # 내부 API 클라이언트
-    ├── external-api.ts     # 외부 API 프록시 유틸
-    └── types.ts            # TypeScript 타입 정의
 ```
 
 ## 주요 기능
@@ -127,6 +101,44 @@ OSS 상세에서 "리뷰 하기" 버튼을 클릭하면 리뷰 모달이 열립�
 각 버전의 "리뷰 하기" 버튼을 클릭하면 버전 리뷰 모달이 열립니다. Declared License, Detected License, Copyright, Description 등을 수정할 수 있습니다.
 
 ![버전 리뷰 모달](docs/screenshots/08-version-review-modal.png)
+
+## 프로젝트 구조
+
+```
+src/
+├── app/                    # Next.js App Router 페이지
+│   ├── api/                # API 프록시 라우트 (외부 API 중계)
+│   │   ├── oss/            # OSS 마스터 API
+│   │   └── oss-versions/   # OSS 버전 API (CRUD + 일괄 삭제)
+│   ├── oss/[id]/           # OSS 상세 페이지
+│   ├── layout.tsx          # 루트 레이아웃
+│   └── page.tsx            # 메인 페이지 (OSS 목록)
+├── components/             # React 컴포넌트
+│   ├── AuthTokenInput.tsx  # 토큰 입력 폼
+│   ├── Header.tsx          # 헤더 (사용자 정보 + 로그아웃)
+│   ├── Modal.tsx           # 범용 모달 컴포넌트
+│   ├── OssList.tsx         # OSS 목록 (검색, 필터, 페이지네이션)
+│   ├── OssListItem.tsx     # OSS 목록 행
+│   ├── OssDetail.tsx       # OSS 상세 정보
+│   ├── OssReviewModal.tsx  # OSS 리뷰/수정 모달
+│   ├── VersionList.tsx     # 버전 목록 (선택, 필터, 일괄 삭제)
+│   ├── VersionItem.tsx     # 버전 목록 행
+│   ├── VersionReviewModal.tsx  # 버전 리뷰/수정 모달
+│   ├── StatusBadge.tsx     # 리뷰 상태 배지
+│   ├── Pagination.tsx      # 페이지네이션
+│   ├── LoadingSkeleton.tsx # 로딩 스켈레톤
+│   └── ErrorMessage.tsx    # 에러 메시지
+├── contexts/
+│   └── AuthContext.tsx      # 인증 컨텍스트 (sessionStorage)
+├── hooks/
+│   ├── useAuth.ts          # 인증 훅
+│   ├── useOssList.ts       # OSS 목록 데이터 훅
+│   └── useOssVersions.ts   # OSS 버전 데이터 훅
+└── lib/
+    ├── api-client.ts       # 내부 API 클라이언트
+    ├── external-api.ts     # 외부 API 프록시 유틸
+    └── types.ts            # TypeScript 타입 정의
+```
 
 ## API 아키텍처
 
