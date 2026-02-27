@@ -40,7 +40,8 @@ export async function POST(
         }
 
         const currentVersion = getResult.messageList as unknown as OssVersion
-        const updatedVersion = { ...currentVersion, reviewed }
+        const externalReviewed = reviewed === 'Y' ? 'true' : 'false'
+        const updatedVersion = { ...currentVersion, reviewed: externalReviewed }
 
         const putResult = await externalFetch(`/api/v2/admin/oss-versions/${id}`, token, {
           method: 'PUT',

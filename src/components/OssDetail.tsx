@@ -1,15 +1,18 @@
+'use client'
+
+import { useState } from 'react'
 import StatusBadge from './StatusBadge'
-import type { OssMaster, OssReviewStatus } from '@/lib/types'
+import OssReviewModal from './OssReviewModal'
+import type { OssMaster } from '@/lib/types'
 
 interface OssDetailProps {
   readonly oss: OssMaster
-  readonly onUpdateReview?: (reviewed: OssReviewStatus) => void
+  readonly onSave?: (data: Partial<OssMaster>) => Promise<void>
   readonly updating?: boolean
 }
 
-export default function OssDetail({ oss, onUpdateReview, updating }: OssDetailProps) {
-  const nextStatus: OssReviewStatus = oss.reviewed === 'Y' ? 'N' : 'Y'
-  const buttonLabel = oss.reviewed === 'Y' ? '리뷰 취소' : '리뷰 하기'
+export default function OssDetail({ oss, onSave, updating }: OssDetailProps) {
+  const [modalOpen, setModalOpen] = useState(false)
 
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-6">
@@ -22,18 +25,13 @@ export default function OssDetail({ oss, onUpdateReview, updating }: OssDetailPr
         </div>
         <div className="flex items-center gap-2">
           <StatusBadge status={oss.reviewed} />
-          {onUpdateReview && (
+          {onSave && (
             <button
               type="button"
-              onClick={() => onUpdateReview(nextStatus)}
-              disabled={updating}
-              className={`text-xs font-medium px-3 py-1.5 rounded-md border transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
-                oss.reviewed === 'Y'
-                  ? 'border-gray-300 text-gray-700 hover:bg-gray-50'
-                  : 'border-green-300 text-green-700 bg-green-50 hover:bg-green-100'
-              }`}
+              onClick={() => setModalOpen(true)}
+              className="text-xs font-medium px-3 py-1.5 rounded-md border transition-colors border-blue-300 text-blue-700 bg-blue-50 hover:bg-blue-100"
             >
-              {buttonLabel}
+              리뷰 하기
             </button>
           )}
         </div>
@@ -89,6 +87,16 @@ export default function OssDetail({ oss, onUpdateReview, updating }: OssDetailPr
           </div>
         )}
       </dl>
+
+      {onSave && (
+        <OssReviewModal
+          open={modalOpen}
+          onClose={() => setModalOpen(false)}
+          oss={oss}
+          onSave={onSave}
+          saving={updating}
+        />
+      )}
     </div>
   )
 }

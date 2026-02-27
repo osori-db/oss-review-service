@@ -1,12 +1,14 @@
 'use client'
 
+import { useState } from 'react'
 import { useOssVersions } from '@/hooks/useOssVersions'
 import VersionItem from './VersionItem'
+import VersionReviewModal from './VersionReviewModal'
 import Pagination from './Pagination'
 import LoadingSkeleton from './LoadingSkeleton'
 import ErrorMessage from './ErrorMessage'
 import OssDetail from './OssDetail'
-import type { OssReviewStatus } from '@/lib/types'
+import type { OssReviewStatus, OssVersion } from '@/lib/types'
 
 interface VersionListProps {
   readonly ossMasterId: number
@@ -29,11 +31,13 @@ export default function VersionList({ ossMasterId }: VersionListProps) {
     toggleSelection,
     toggleSelectAll,
     selectUnreviewed,
-    updateReviewStatus,
-    updateOssMasterReview,
+    saveOssMaster,
+    saveVersion,
     bulkUpdateReview,
     refresh,
   } = useOssVersions(ossMasterId)
+
+  const [reviewTarget, setReviewTarget] = useState<OssVersion | null>(null)
 
   const allSelected = versions.length > 0 && versions.every((v) => selectedIds.has(v.oss_version_id))
   const hasUnreviewed = versions.some((v) => v.reviewed === 'N')
@@ -43,7 +47,7 @@ export default function VersionList({ ossMasterId }: VersionListProps) {
       {ossMaster && (
         <OssDetail
           oss={ossMaster}
-          onUpdateReview={updateOssMasterReview}
+          onSave={saveOssMaster}
           updating={updating}
         />
       )}
@@ -133,9 +137,8 @@ export default function VersionList({ ossMasterId }: VersionListProps) {
                       key={version.oss_version_id}
                       version={version}
                       selected={selectedIds.has(version.oss_version_id)}
-                      updating={updating}
                       onToggleSelect={toggleSelection}
-                      onUpdateReview={updateReviewStatus}
+                      onOpenReview={setReviewTarget}
                     />
                   ))}
                 </tbody>
@@ -162,6 +165,16 @@ export default function VersionList({ ossMasterId }: VersionListProps) {
           </>
         )}
       </div>
+
+      {reviewTarget && (
+        <VersionReviewModal
+          open={true}
+          onClose={() => setReviewTarget(null)}
+          version={reviewTarget}
+          onSave={saveVersion}
+          saving={updating}
+        />
+      )}
     </div>
   )
 }

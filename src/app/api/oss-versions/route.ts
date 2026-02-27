@@ -53,7 +53,7 @@ export async function GET(
 
     const versions = rawList.map((item) => ({
       ...item,
-      reviewed: item.reviewed === 1 || item.reviewed === '1' || item.reviewed === 'Y' ? 'Y' as const : 'N' as const,
+      reviewed: item.reviewed === 1 || item.reviewed === '1' || item.reviewed === 'Y' || item.reviewed === true || item.reviewed === 'true' ? 'Y' as const : 'N' as const,
     })) as unknown as readonly OssVersion[]
 
     return NextResponse.json({

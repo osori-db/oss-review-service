@@ -1,12 +1,11 @@
 import StatusBadge from './StatusBadge'
-import type { OssVersion, OssReviewStatus } from '@/lib/types'
+import type { OssVersion } from '@/lib/types'
 
 interface VersionItemProps {
   readonly version: OssVersion
   readonly selected: boolean
-  readonly updating: boolean
   readonly onToggleSelect: (id: number) => void
-  readonly onUpdateReview: (id: number, reviewed: OssReviewStatus) => void
+  readonly onOpenReview: (version: OssVersion) => void
 }
 
 function formatLicenseList(licenses: readonly string[] | null): string {
@@ -17,13 +16,9 @@ function formatLicenseList(licenses: readonly string[] | null): string {
 export default function VersionItem({
   version,
   selected,
-  updating,
   onToggleSelect,
-  onUpdateReview,
+  onOpenReview,
 }: VersionItemProps) {
-  const nextStatus: OssReviewStatus = version.reviewed === 'Y' ? 'N' : 'Y'
-  const buttonLabel = version.reviewed === 'Y' ? '리뷰 취소' : '리뷰 하기'
-
   return (
     <tr className="border-b border-gray-100 hover:bg-blue-50/30 transition-colors">
       <td className="px-2 py-2.5 text-center">
@@ -58,15 +53,10 @@ export default function VersionItem({
       <td className="px-2 py-2.5 text-center">
         <button
           type="button"
-          onClick={() => onUpdateReview(version.oss_version_id, nextStatus)}
-          disabled={updating}
-          className={`text-xs font-medium px-2.5 py-1 rounded-md border transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
-            version.reviewed === 'Y'
-              ? 'border-gray-300 text-gray-700 hover:bg-gray-50'
-              : 'border-green-300 text-green-700 bg-green-50 hover:bg-green-100'
-          }`}
+          onClick={() => onOpenReview(version)}
+          className="text-xs font-medium px-2.5 py-1 rounded-md border transition-colors border-blue-300 text-blue-700 bg-blue-50 hover:bg-blue-100"
         >
-          {buttonLabel}
+          리뷰 하기
         </button>
       </td>
     </tr>

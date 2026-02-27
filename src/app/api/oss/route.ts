@@ -3,7 +3,7 @@ import { externalFetch, buildQueryString, getErrorMessage } from '@/lib/external
 import type { ApiResponse, OssMaster } from '@/lib/types'
 
 function toReviewStatus(value: unknown): 'Y' | 'N' {
-  return value === 1 || value === '1' || value === 'Y' ? 'Y' : 'N'
+  return value === 1 || value === '1' || value === 'Y' || value === true || value === 'true' ? 'Y' : 'N'
 }
 
 export async function GET(

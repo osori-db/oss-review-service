@@ -26,6 +26,8 @@ interface UseOssVersionsReturn extends UseOssVersionsState {
   readonly setReviewFilter: (filter: OssReviewStatus | '') => void
   readonly updateReviewStatus: (id: number, reviewed: OssReviewStatus) => Promise<void>
   readonly updateOssMasterReview: (reviewed: OssReviewStatus) => Promise<void>
+  readonly saveOssMaster: (data: Partial<OssMaster>) => Promise<void>
+  readonly saveVersion: (id: number, data: Partial<OssVersion>) => Promise<void>
   readonly bulkUpdateReview: (reviewed: OssReviewStatus) => Promise<void>
   readonly refresh: () => void
 }
@@ -175,6 +177,68 @@ export function useOssVersions(ossMasterId: number): UseOssVersionsReturn {
     [token, ossMasterId, state.ossMaster]
   )
 
+  const saveOssMaster = useCallback(
+    async (data: Partial<OssMaster>) => {
+      if (!token || !state.ossMaster) return
+
+      setState((prev) => ({ ...prev, updating: true }))
+
+      try {
+        const result = await updateOssMaster(token, ossMasterId, {
+          ...state.ossMaster,
+          ...data,
+        })
+
+        if (!result.success) {
+          setState((prev) => ({ ...prev, updating: false, error: result.error ?? 'OSS 업데이트 실패' }))
+          return
+        }
+
+        setState((prev) => ({
+          ...prev,
+          updating: false,
+          ossMaster: prev.ossMaster ? { ...prev.ossMaster, ...data } : null,
+        }))
+      } catch (error) {
+        const message = error instanceof Error ? error.message : '알 수 없는 오류'
+        setState((prev) => ({ ...prev, updating: false, error: message }))
+      }
+    },
+    [token, ossMasterId, state.ossMaster]
+  )
+
+  const saveVersion = useCallback(
+    async (id: number, data: Partial<OssVersion>) => {
+      if (!token) return
+
+      setState((prev) => ({ ...prev, updating: true }))
+
+      try {
+        const version = state.versions.find((v) => v.oss_version_id === id)
+        if (!version) return
+
+        const result = await updateOssVersion(token, id, { ...version, ...data })
+
+        if (!result.success) {
+          setState((prev) => ({ ...prev, updating: false, error: result.error ?? '버전 업데이트 실패' }))
+          return
+        }
+
+        setState((prev) => ({
+          ...prev,
+          updating: false,
+          versions: prev.versions.map((v) =>
+            v.oss_version_id === id ? { ...v, ...data } : v
+          ),
+        }))
+      } catch (error) {
+        const message = error instanceof Error ? error.message : '알 수 없는 오류'
+        setState((prev) => ({ ...prev, updating: false, error: message }))
+      }
+    },
+    [token, state.versions]
+  )
+
   const updateReviewStatus = useCallback(
     async (id: number, reviewed: OssReviewStatus) => {
       if (!token) return
@@ -253,6 +317,8 @@ export function useOssVersions(ossMasterId: number): UseOssVersionsReturn {
     selectUnreviewed,
     updateReviewStatus,
     updateOssMasterReview,
+    saveOssMaster,
+    saveVersion,
     bulkUpdateReview,
     refresh: load,
   }
