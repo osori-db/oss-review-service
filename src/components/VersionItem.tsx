@@ -22,7 +22,7 @@ export default function VersionItem({
   onUpdateReview,
 }: VersionItemProps) {
   const nextStatus: OssReviewStatus = version.reviewed === 'Y' ? 'N' : 'Y'
-  const buttonLabel = version.reviewed === 'Y' ? '리뷰 취소' : '리뷰 완료'
+  const buttonLabel = version.reviewed === 'Y' ? '리뷰 취소' : '리뷰 하기'
 
   return (
     <tr className="border-b border-gray-100 hover:bg-blue-50/30 transition-colors">

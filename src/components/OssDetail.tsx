@@ -9,7 +9,7 @@ interface OssDetailProps {
 
 export default function OssDetail({ oss, onUpdateReview, updating }: OssDetailProps) {
   const nextStatus: OssReviewStatus = oss.reviewed === 'Y' ? 'N' : 'Y'
-  const buttonLabel = oss.reviewed === 'Y' ? '리뷰 취소' : '리뷰 완료'
+  const buttonLabel = oss.reviewed === 'Y' ? '리뷰 취소' : '리뷰 하기'
 
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-6">
