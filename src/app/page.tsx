@@ -4,7 +4,7 @@ import OssList from '@/components/OssList'
 
 export default function HomePage() {
   return (
-    <main className="max-w-4xl mx-auto px-4 py-8">
+    <main className="max-w-6xl mx-auto px-4 py-8">
       <Header />
       <div className="mb-6">
         <AuthTokenInput />

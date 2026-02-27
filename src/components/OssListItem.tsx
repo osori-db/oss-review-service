@@ -6,26 +6,54 @@ interface OssListItemProps {
   readonly oss: OssMaster
 }
 
+function purlToUrl(purl: string): string {
+  if (!purl) return ''
+  const match = purl.match(/^pkg:github\/(.+)$/)
+  if (match) return `https://github.com/${match[1]}`
+  const npmMatch = purl.match(/^pkg:npm\/(.+)$/)
+  if (npmMatch) return `https://www.npmjs.com/package/${npmMatch[1]}`
+  const pypiMatch = purl.match(/^pkg:pypi\/(.+)$/)
+  if (pypiMatch) return `https://pypi.org/project/${pypiMatch[1]}`
+  return purl
+}
+
 export default function OssListItem({ oss }: OssListItemProps) {
+  const url = purlToUrl(oss.purl ?? '')
+
   return (
-    <Link
-      href={`/oss/${oss.oss_master_id}`}
-      className="block bg-white rounded-lg border border-gray-200 p-4 hover:border-blue-300 hover:shadow-sm transition-all"
-    >
-      <div className="flex items-center justify-between gap-4">
-        <div className="min-w-0 flex-1">
-          <h3 className="text-sm font-semibold text-gray-900 truncate">
-            {oss.oss_name}
-          </h3>
-          {oss.oss_nickname && (
-            <p className="text-xs text-gray-500 mt-0.5 truncate">{oss.oss_nickname}</p>
-          )}
-          {oss.publisher && (
-            <p className="text-xs text-gray-400 mt-0.5">by {oss.publisher}</p>
-          )}
-        </div>
+    <tr className="border-b border-gray-100 hover:bg-blue-50/50 transition-colors">
+      <td className="px-3 py-2.5 text-xs text-gray-500 text-center">
+        {oss.oss_master_id}
+      </td>
+      <td className="px-3 py-2.5">
+        <Link
+          href={`/oss/${oss.oss_master_id}`}
+          className="text-sm font-medium text-blue-700 hover:text-blue-900 hover:underline"
+        >
+          {oss.oss_name}
+        </Link>
+        {oss.oss_nickname && (
+          <p className="text-xs text-gray-400 mt-0.5 truncate">{oss.oss_nickname}</p>
+        )}
+      </td>
+      <td className="px-3 py-2.5 max-w-[200px]">
+        {url ? (
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-gray-500 hover:text-blue-600 truncate block"
+            title={url}
+          >
+            {url}
+          </a>
+        ) : (
+          <span className="text-xs text-gray-300">-</span>
+        )}
+      </td>
+      <td className="px-3 py-2.5 text-center">
         <StatusBadge status={oss.reviewed} />
-      </div>
-    </Link>
+      </td>
+    </tr>
   )
 }

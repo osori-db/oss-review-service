@@ -83,10 +83,22 @@ export default function OssList() {
           <p className="text-sm text-gray-500">
             총 {totalCount.toLocaleString()}건
           </p>
-          <div className="space-y-2">
-            {data.map((oss) => (
-              <OssListItem key={oss.oss_master_id} oss={oss} />
-            ))}
+          <div className="overflow-x-auto rounded-lg border border-gray-200">
+            <table className="w-full text-left">
+              <thead>
+                <tr className="bg-gray-50 border-b border-gray-200">
+                  <th className="px-3 py-2.5 text-xs font-semibold text-gray-600 text-center w-20">ID</th>
+                  <th className="px-3 py-2.5 text-xs font-semibold text-gray-600">Name</th>
+                  <th className="px-3 py-2.5 text-xs font-semibold text-gray-600">URL</th>
+                  <th className="px-3 py-2.5 text-xs font-semibold text-gray-600 text-center w-24">리뷰</th>
+                </tr>
+              </thead>
+              <tbody className="bg-white">
+                {data.map((oss) => (
+                  <OssListItem key={oss.oss_master_id} oss={oss} />
+                ))}
+              </tbody>
+            </table>
           </div>
           <Pagination
             currentPage={currentPage}

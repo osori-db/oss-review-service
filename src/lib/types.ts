@@ -24,6 +24,9 @@ export interface OssMaster {
   readonly ignore_flag: string
   readonly created_date: string
   readonly modified_date: string
+  readonly creater: string
+  readonly modifier: string
+  readonly purl: string
 }
 
 export interface OssVersion {

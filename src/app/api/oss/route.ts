@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from 'next/server'
 import { externalFetch, buildQueryString, getErrorMessage } from '@/lib/external-api'
 import type { ApiResponse, OssMaster } from '@/lib/types'
 
+function toReviewStatus(value: unknown): 'Y' | 'N' {
+  return value === 1 || value === '1' || value === 'Y' ? 'Y' : 'N'
+}
+
 export async function GET(
   request: NextRequest
 ): Promise<NextResponse<ApiResponse<readonly OssMaster[]>>> {
@@ -44,7 +48,7 @@ export async function GET(
     const ossList = rawList.map((item) => ({
       oss_master_id: item.oss_master_id as number,
       oss_name: (item.oss_name ?? item.name ?? '') as string,
-      reviewed: item.reviewed === 1 || item.reviewed === '1' || item.reviewed === 'Y' ? 'Y' as const : 'N' as const,
+      reviewed: toReviewStatus(item.reviewed),
       version_license_diff: String(item.version_license_diff ?? ''),
       oss_nickname: (item.oss_nickname ?? '') as string,
       publisher: (item.publisher ?? '') as string,

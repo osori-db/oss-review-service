@@ -28,7 +28,6 @@ export async function GET(
 
     const messageList = result.messageList as Record<string, unknown>
     const raw = (messageList.detailInfo ?? messageList) as Record<string, unknown>
-
     const oss = {
       oss_master_id: raw.oss_master_id as number,
       oss_name: (raw.oss_name ?? raw.name ?? '') as string,
