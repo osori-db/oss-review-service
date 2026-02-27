@@ -5,6 +5,11 @@ export const REVIEW_STATUS_LABELS: Record<OssReviewStatus, string> = {
   N: '미리뷰',
 }
 
+export interface OssVersionCounts {
+  readonly total_count: number
+  readonly reviewed_count: number
+}
+
 export interface OssMaster {
   readonly oss_master_id: number
   readonly oss_name: string
@@ -27,6 +32,7 @@ export interface OssMaster {
   readonly creater: string
   readonly modifier: string
   readonly purl: string
+  readonly versions?: OssVersionCounts
 }
 
 export interface OssVersion {

@@ -15,12 +15,15 @@ interface UseOssVersionsState {
   readonly pageSize: number
   readonly selectedIds: ReadonlySet<number>
   readonly updating: boolean
+  readonly reviewFilter: OssReviewStatus | ''
 }
 
 interface UseOssVersionsReturn extends UseOssVersionsState {
   readonly setCurrentPage: (page: number) => void
   readonly toggleSelection: (id: number) => void
   readonly toggleSelectAll: () => void
+  readonly selectUnreviewed: () => void
+  readonly setReviewFilter: (filter: OssReviewStatus | '') => void
   readonly updateReviewStatus: (id: number, reviewed: OssReviewStatus) => Promise<void>
   readonly bulkUpdateReview: (reviewed: OssReviewStatus) => Promise<void>
   readonly refresh: () => void
@@ -41,6 +44,7 @@ export function useOssVersions(ossMasterId: number): UseOssVersionsReturn {
     pageSize: DEFAULT_PAGE_SIZE,
     selectedIds: new Set(),
     updating: false,
+    reviewFilter: 'N',
   })
 
   const load = useCallback(async () => {
@@ -53,6 +57,7 @@ export function useOssVersions(ossMasterId: number): UseOssVersionsReturn {
         fetchOssDetail(token, ossMasterId),
         fetchOssVersions(token, {
           ossMasterId,
+          reviewed: state.reviewFilter || undefined,
           page: state.currentPage,
           size: state.pageSize,
         }),
@@ -89,7 +94,7 @@ export function useOssVersions(ossMasterId: number): UseOssVersionsReturn {
       const message = error instanceof Error ? error.message : '알 수 없는 오류'
       setState((prev) => ({ ...prev, loading: false, error: message }))
     }
-  }, [token, ossMasterId, state.currentPage, state.pageSize])
+  }, [token, ossMasterId, state.currentPage, state.pageSize, state.reviewFilter])
 
   useEffect(() => {
     load()
@@ -97,6 +102,10 @@ export function useOssVersions(ossMasterId: number): UseOssVersionsReturn {
 
   const setCurrentPage = useCallback((page: number) => {
     setState((prev) => ({ ...prev, currentPage: page, selectedIds: new Set() }))
+  }, [])
+
+  const setReviewFilter = useCallback((filter: OssReviewStatus | '') => {
+    setState((prev) => ({ ...prev, reviewFilter: filter, currentPage: 1, selectedIds: new Set() }))
   }, [])
 
   const toggleSelection = useCallback((id: number) => {
@@ -122,6 +131,17 @@ export function useOssVersions(ossMasterId: number): UseOssVersionsReturn {
         selectedIds: new Set(prev.versions.map((v) => v.oss_version_id)),
       }
     })
+  }, [])
+
+  const selectUnreviewed = useCallback(() => {
+    setState((prev) => ({
+      ...prev,
+      selectedIds: new Set(
+        prev.versions
+          .filter((v) => v.reviewed === 'N')
+          .map((v) => v.oss_version_id)
+      ),
+    }))
   }, [])
 
   const updateReviewStatus = useCallback(
@@ -196,8 +216,10 @@ export function useOssVersions(ossMasterId: number): UseOssVersionsReturn {
   return {
     ...state,
     setCurrentPage,
+    setReviewFilter,
     toggleSelection,
     toggleSelectAll,
+    selectUnreviewed,
     updateReviewStatus,
     bulkUpdateReview,
     refresh: load,

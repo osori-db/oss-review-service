@@ -36,7 +36,7 @@ export function useOssList(): UseOssListReturn {
     currentPage: 1,
     pageSize: DEFAULT_PAGE_SIZE,
     searchQuery: '',
-    reviewFilter: '',
+    reviewFilter: 'N',
   })
 
   const load = useCallback(async () => {

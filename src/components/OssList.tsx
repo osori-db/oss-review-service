@@ -29,6 +29,7 @@ export default function OssList() {
     totalCount,
     currentPage,
     pageSize,
+    reviewFilter,
     setSearchQuery,
     setReviewFilter,
     setCurrentPage,
@@ -61,6 +62,7 @@ export default function OssList() {
           className="flex-1 rounded-lg border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />
         <select
+          value={reviewFilter}
           onChange={(e) => setReviewFilter(e.target.value as OssReviewStatus | '')}
           className="rounded-lg border border-gray-300 px-4 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
@@ -90,6 +92,7 @@ export default function OssList() {
                   <th className="px-3 py-2.5 text-xs font-semibold text-gray-600 text-center w-20">ID</th>
                   <th className="px-3 py-2.5 text-xs font-semibold text-gray-600">Name</th>
                   <th className="px-3 py-2.5 text-xs font-semibold text-gray-600">URL</th>
+                  <th className="px-3 py-2.5 text-xs font-semibold text-gray-600 text-center w-28">버전 리뷰</th>
                   <th className="px-3 py-2.5 text-xs font-semibold text-gray-600 text-center w-24">리뷰</th>
                 </tr>
               </thead>

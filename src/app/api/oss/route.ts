@@ -53,6 +53,12 @@ export async function GET(
       oss_nickname: (item.oss_nickname ?? '') as string,
       publisher: (item.publisher ?? '') as string,
       purl: (item.purl ?? '') as string,
+      versions: item.versions
+        ? {
+            total_count: ((item.versions as Record<string, unknown>).total_count as number) ?? 0,
+            reviewed_count: ((item.versions as Record<string, unknown>).reviewed_count as number) ?? 0,
+          }
+        : undefined,
     })) as unknown as readonly OssMaster[]
 
     return NextResponse.json({

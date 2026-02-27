@@ -52,6 +52,19 @@ export default function OssListItem({ oss }: OssListItemProps) {
         )}
       </td>
       <td className="px-3 py-2.5 text-center">
+        {oss.versions ? (
+          <span className={`text-xs font-medium ${
+            oss.versions.reviewed_count < oss.versions.total_count
+              ? 'text-amber-600'
+              : 'text-green-600'
+          }`}>
+            {oss.versions.reviewed_count}/{oss.versions.total_count}
+          </span>
+        ) : (
+          <span className="text-xs text-gray-300">-</span>
+        )}
+      </td>
+      <td className="px-3 py-2.5 text-center">
         <StatusBadge status={oss.reviewed} />
       </td>
     </tr>
