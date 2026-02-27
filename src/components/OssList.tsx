@@ -59,12 +59,12 @@ export default function OssList() {
           value={localSearch}
           onChange={(e) => setLocalSearch(e.target.value)}
           placeholder="OSS 이름으로 검색..."
-          className="flex-1 rounded-lg border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="flex-1 rounded-lg border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-olive-400 focus:border-transparent"
         />
         <select
           value={reviewFilter}
           onChange={(e) => setReviewFilter(e.target.value as OssReviewStatus | '')}
-          className="rounded-lg border border-gray-300 px-4 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="rounded-lg border border-gray-300 px-4 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-olive-400"
         >
           <option value="">전체</option>
           <option value="Y">리뷰 완료</option>

@@ -68,7 +68,7 @@ export default function VersionList({ ossMasterId }: VersionListProps) {
             <select
               value={reviewFilter}
               onChange={(e) => setReviewFilter(e.target.value as OssReviewStatus | '')}
-              className="rounded-lg border border-gray-300 px-3 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="rounded-lg border border-gray-300 px-3 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-olive-400"
             >
               <option value="">전체</option>
               <option value="Y">리뷰 완료</option>
@@ -85,7 +85,7 @@ export default function VersionList({ ossMasterId }: VersionListProps) {
                 type="button"
                 onClick={() => bulkUpdateReview('Y')}
                 disabled={updating}
-                className="text-xs font-medium px-3 py-1.5 rounded-md bg-green-600 text-white hover:bg-green-700 disabled:opacity-40 disabled:cursor-not-allowed"
+                className="text-xs font-medium px-3 py-1.5 rounded-md bg-olive-500 text-white hover:bg-olive-600 disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 리뷰하기
               </button>
@@ -118,7 +118,7 @@ export default function VersionList({ ossMasterId }: VersionListProps) {
                         type="checkbox"
                         checked={allSelected}
                         onChange={toggleSelectAll}
-                        className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        className="h-4 w-4 rounded border-gray-300 text-olive-500 focus:ring-olive-400"
                         aria-label="전체 선택"
                       />
                     </th>
@@ -127,7 +127,7 @@ export default function VersionList({ ossMasterId }: VersionListProps) {
                     <th className="px-2 py-2.5 text-xs font-semibold text-gray-600">Declared License</th>
                     <th className="px-2 py-2.5 text-xs font-semibold text-gray-600">Detected License</th>
                     <th className="px-2 py-2.5 text-xs font-semibold text-gray-600">Copyright</th>
-                    <th className="px-2 py-2.5 text-xs font-semibold text-gray-600 text-center w-20">리뷰</th>
+                    <th className="px-2 py-2.5 text-xs font-semibold text-gray-600 text-center w-24">리뷰</th>
                     <th className="px-2 py-2.5 text-xs font-semibold text-gray-600 text-center w-24">액션</th>
                   </tr>
                 </thead>

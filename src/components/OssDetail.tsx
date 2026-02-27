@@ -29,7 +29,7 @@ export default function OssDetail({ oss, onSave, updating }: OssDetailProps) {
             <button
               type="button"
               onClick={() => setModalOpen(true)}
-              className="text-xs font-medium px-3 py-1.5 rounded-md border transition-colors border-blue-300 text-blue-700 bg-blue-50 hover:bg-blue-100"
+              className="text-xs font-medium px-3 py-1.5 rounded-md border transition-colors border-orange-400 text-orange-700 bg-orange-50 hover:bg-orange-100"
             >
               리뷰 하기
             </button>

@@ -26,7 +26,7 @@ function formatLicenseList(list: readonly string[] | null): string {
 
 const FIELD_LABEL = 'block text-xs font-medium text-gray-500 mb-1'
 const TEXT_INPUT =
-  'w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+  'w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-olive-400 focus:border-transparent'
 const TEXTAREA = `${TEXT_INPUT} resize-none`
 
 export default function VersionReviewModal({
@@ -89,7 +89,7 @@ export default function VersionReviewModal({
                 name="version-reviewed"
                 checked={reviewed === 'Y'}
                 onChange={() => setReviewed('Y')}
-                className="h-4 w-4 text-green-600 border-gray-300 focus:ring-green-500"
+                className="h-4 w-4 text-olive-500 border-gray-300 focus:ring-olive-400"
               />
               <span className="text-sm text-gray-700">리뷰 완료</span>
             </label>
@@ -172,7 +172,7 @@ export default function VersionReviewModal({
             type="button"
             onClick={handleSave}
             disabled={saving}
-            className="px-4 py-2 text-sm rounded-lg bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="px-4 py-2 text-sm rounded-lg bg-olive-500 text-white hover:bg-olive-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
             {saving ? '저장 중...' : '저장'}
           </button>

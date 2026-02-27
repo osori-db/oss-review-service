@@ -21,14 +21,14 @@ export default function OssListItem({ oss }: OssListItemProps) {
   const url = purlToUrl(oss.purl ?? '')
 
   return (
-    <tr className="border-b border-gray-100 hover:bg-blue-50/50 transition-colors">
+    <tr className="border-b border-gray-100 hover:bg-olive-50/50 transition-colors">
       <td className="px-3 py-2.5 text-xs text-gray-500 text-center">
         {oss.oss_master_id}
       </td>
       <td className="px-3 py-2.5">
         <Link
           href={`/oss/${oss.oss_master_id}`}
-          className="text-sm font-medium text-blue-700 hover:text-blue-900 hover:underline"
+          className="text-sm font-medium text-olive-600 hover:text-olive-800 hover:underline"
         >
           {oss.oss_name}
         </Link>
@@ -56,7 +56,7 @@ export default function OssListItem({ oss }: OssListItemProps) {
           <span className={`text-xs font-medium ${
             oss.versions.reviewed_count < oss.versions.total_count
               ? 'text-amber-600'
-              : 'text-green-600'
+              : 'text-olive-500'
           }`}>
             {oss.versions.reviewed_count}/{oss.versions.total_count}
           </span>

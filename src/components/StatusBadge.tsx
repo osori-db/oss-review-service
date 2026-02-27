@@ -2,7 +2,7 @@ import type { OssReviewStatus } from '@/lib/types'
 import { REVIEW_STATUS_LABELS } from '@/lib/types'
 
 const STATUS_STYLES: Record<OssReviewStatus, string> = {
-  Y: 'bg-green-100 text-green-800 border-green-300',
+  Y: 'bg-olive-50 text-olive-700 border-olive-200',
   N: 'bg-gray-100 text-gray-600 border-gray-300',
 }
 

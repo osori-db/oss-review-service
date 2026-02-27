@@ -20,13 +20,13 @@ export default function VersionItem({
   onOpenReview,
 }: VersionItemProps) {
   return (
-    <tr className="border-b border-gray-100 hover:bg-blue-50/30 transition-colors">
+    <tr className="border-b border-gray-100 hover:bg-olive-50/30 transition-colors">
       <td className="px-2 py-2.5 text-center">
         <input
           type="checkbox"
           checked={selected}
           onChange={() => onToggleSelect(version.oss_version_id)}
-          className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+          className="h-4 w-4 rounded border-gray-300 text-olive-500 focus:ring-olive-400"
           aria-label={`${version.version} 선택`}
         />
       </td>
@@ -47,14 +47,14 @@ export default function VersionItem({
       <td className="px-2 py-2.5 text-xs text-gray-600 max-w-[150px] truncate" title={version.copyright || ''}>
         {version.copyright || '-'}
       </td>
-      <td className="px-2 py-2.5 text-center">
+      <td className="px-2 py-2.5 text-center whitespace-nowrap">
         <StatusBadge status={version.reviewed} />
       </td>
       <td className="px-2 py-2.5 text-center">
         <button
           type="button"
           onClick={() => onOpenReview(version)}
-          className="text-xs font-medium px-2.5 py-1 rounded-md border transition-colors border-blue-300 text-blue-700 bg-blue-50 hover:bg-blue-100"
+          className="text-xs font-medium px-2.5 py-1 rounded-md border transition-colors border-orange-400 text-orange-700 bg-orange-50 hover:bg-orange-100"
         >
           리뷰 하기
         </button>
