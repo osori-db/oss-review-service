@@ -156,3 +156,7 @@ Next.js API Routes가 프록시 역할을 하여 외부 API와 통신합니다. 
 | `GET /api/oss-versions` | `GET /api/v2/admin/oss-versions` | 버전 목록 조회 |
 | `PUT /api/oss-versions/:id` | `PUT /api/v2/admin/oss-versions/:id` | 버전 수정 |
 | `POST /api/oss-versions/bulk-delete` | `DELETE /api/v2/admin/oss-versions/:id` (each) | 버전 일괄 삭제 |
+
+## License
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
