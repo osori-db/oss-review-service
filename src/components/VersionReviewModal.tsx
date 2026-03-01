@@ -53,7 +53,6 @@ export default function VersionReviewModal({
       description,
       description_ko: descriptionKo,
       declaredLicenseList: parseLicenseList(declaredLicenses),
-      detectedLicenseList: parseLicenseList(detectedLicenses),
       copyright,
       reviewed,
     })
@@ -123,11 +122,9 @@ export default function VersionReviewModal({
           <input
             type="text"
             value={detectedLicenses}
-            onChange={(e) => setDetectedLicenses(e.target.value)}
-            placeholder="MIT, Apache-2.0"
-            className={TEXT_INPUT}
+            disabled
+            className={`${TEXT_INPUT} bg-gray-100 text-gray-500 cursor-not-allowed`}
           />
-          <p className="text-xs text-gray-400 mt-0.5">쉼표로 구분</p>
         </div>
 
         <div>
