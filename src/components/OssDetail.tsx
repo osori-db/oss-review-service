@@ -74,6 +74,18 @@ export default function OssDetail({ oss, onSave, updating }: OssDetailProps) {
             </dd>
           </div>
         )}
+        {oss.creater && (
+          <div>
+            <dt className="text-gray-500">Created by</dt>
+            <dd className="text-gray-900 font-medium">{oss.creater}</dd>
+          </div>
+        )}
+        {oss.purl && (
+          <div className="sm:col-span-2">
+            <dt className="text-gray-500">PURL</dt>
+            <dd className="text-gray-900 font-mono text-xs break-all">{oss.purl}</dd>
+          </div>
+        )}
         {oss.description && (
           <div className="sm:col-span-2">
             <dt className="text-gray-500">Description</dt>

@@ -44,6 +44,9 @@ export async function GET(
       compliance_notice_ko: (raw.compliance_notice_ko ?? '') as string,
       created_date: (raw.created_date ?? '') as string,
       modified_date: (raw.modified_date ?? '') as string,
+      creater: (raw.creater ?? '') as string,
+      modifier: (raw.modifier ?? '') as string,
+      purl: (raw.purl ?? '') as string,
     }
 
     return NextResponse.json({ success: true, data: oss as unknown as OssMaster })
