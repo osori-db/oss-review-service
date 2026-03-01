@@ -2,6 +2,7 @@ import type {
   ApiResponse,
   BulkDeleteRequest,
   BulkDeleteResult,
+  License,
   OssListParams,
   OssMaster,
   OssVersion,
@@ -105,6 +106,22 @@ export function parseUserInfoFromToken(token: string): UserInfo | null {
   } catch {
     return null
   }
+}
+
+export async function fetchLicenses(
+  token: string,
+  name: string,
+  page: number = 0,
+  size: number = 20,
+  exactMatch: boolean = false,
+): Promise<ApiResponse<readonly License[]>> {
+  const params = new URLSearchParams({
+    name,
+    page: String(page),
+    size: String(size),
+    exactMatch: String(exactMatch),
+  })
+  return apiFetch<readonly License[]>(`/api/licenses?${params}`, token)
 }
 
 export async function bulkDeleteVersions(

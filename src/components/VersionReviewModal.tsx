@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import Modal from './Modal'
+import LicenseSelect from './LicenseSelect'
+import { useAuth } from '@/hooks/useAuth'
 import type { OssVersion, OssReviewStatus } from '@/lib/types'
 
 interface VersionReviewModalProps {
@@ -10,13 +12,6 @@ interface VersionReviewModalProps {
   readonly version: OssVersion
   readonly onSave: (id: number, updated: Partial<OssVersion>) => Promise<void>
   readonly saving?: boolean
-}
-
-function parseLicenseList(value: string): readonly string[] {
-  return value
-    .split(',')
-    .map((s) => s.trim())
-    .filter(Boolean)
 }
 
 function formatLicenseList(list: readonly string[] | null): string {
@@ -36,12 +31,13 @@ export default function VersionReviewModal({
   onSave,
   saving = false,
 }: VersionReviewModalProps) {
+  const { token } = useAuth()
   const [description, setDescription] = useState(version.description ?? '')
   const [descriptionKo, setDescriptionKo] = useState(version.description_ko ?? '')
-  const [declaredLicenses, setDeclaredLicenses] = useState(
-    formatLicenseList(version.declaredLicenseList)
+  const [declaredLicenses, setDeclaredLicenses] = useState<readonly string[]>(
+    version.declaredLicenseList ?? []
   )
-  const [detectedLicenses, setDetectedLicenses] = useState(
+  const [detectedLicenses] = useState(
     formatLicenseList(version.detectedLicenseList)
   )
   const [copyright, setCopyright] = useState(version.copyright ?? '')
@@ -52,7 +48,7 @@ export default function VersionReviewModal({
       ...version,
       description,
       description_ko: descriptionKo,
-      declaredLicenseList: parseLicenseList(declaredLicenses),
+      declaredLicenseList: declaredLicenses,
       copyright,
       reviewed,
     })
@@ -107,14 +103,15 @@ export default function VersionReviewModal({
 
         <div>
           <label className={FIELD_LABEL}>Declared License</label>
-          <input
-            type="text"
-            value={declaredLicenses}
-            onChange={(e) => setDeclaredLicenses(e.target.value)}
-            placeholder="MIT, Apache-2.0"
-            className={TEXT_INPUT}
-          />
-          <p className="text-xs text-gray-400 mt-0.5">쉼표로 구분</p>
+          {token ? (
+            <LicenseSelect
+              selectedLicenses={declaredLicenses}
+              onChange={setDeclaredLicenses}
+              token={token}
+            />
+          ) : (
+            <p className="text-sm text-gray-400">토큰이 없어 라이선스 검색을 사용할 수 없습니다.</p>
+          )}
         </div>
 
         <div>

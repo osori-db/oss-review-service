@@ -99,6 +99,11 @@ export interface BulkDeleteResult {
   readonly failed: number
 }
 
+export interface License {
+  readonly id: number
+  readonly name: string
+}
+
 export interface UserInfo {
   readonly userId: string
   readonly companyName: string
